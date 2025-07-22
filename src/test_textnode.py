@@ -19,5 +19,26 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("URL", TextType.LINK)
         self.assertEqual(node, node2)
 
+class TestTextNodeToHTMLNode(unittest.TestCase):
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.PLAIN_TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+
+    def test_bold(self):
+        node = TextNode("This is bold text", TextType.BOLD_TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "b")
+        self.assertEqual(html_node.value, "This is bold text")
+
+    def test_link(self):
+        node = TextNode("Link goes heres", TextType.LINK, "https://www.google.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "a")
+        self.assertEqual(html_node.value, "Link goes heres")
+        self.assertEqual(html_node.props, {"href": "https://www.google.com"})
+                         
+
 if __name__ == "__main__":
     unittest.main()
